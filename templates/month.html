@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h3 class="mt-5">Monthly Expense Breakdown</h3>
+
+            <div class="card shadow mb-2 bg-white rounded-pill">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">DATE</div>
+                        <div class="col-md-6">Amount</div>
+                    </div>
+                </div>
+            </div>
+            {% for row in mexpense %}
+            <div class="card shadow mb-2 bg-white rounded-bottom">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">{{ row[0] }}</div>
+                        <div class="col-md-6">{{ row[1] }}</div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <section>
+        <div class="row">
+            <div class="col-md-6">
+                <h3 class="mt-5">Expense Breakdown BY Category</h3>
+
+                <div class="card shadow mb-2 bg-white rounded-bottom">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">Food</div>
+                            <div id="mfood" class="col-md-6">{{ m_food }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow mb-2 bg-white rounded">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">Entertainment</div>
+                            <div id="mentertainment" class="col-md-6">{{ m_entertainment }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow mb-2 bg-white rounded">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">Business</div>
+                            <div id="mbusiness" class="col-md-6">{{ m_business }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow mb-2 bg-white rounded">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">Rent</div>
+                            <div id="mrent" class="col-md-6">{{ m_rent }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow mb-2 bg-white rounded">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">EMI</div>
+                            <div id="memi" class="col-md-6">{{ m_EMI }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow mb-2 bg-white rounded">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">Other</div>
+                            <div id="mother" class="col-md-6">{{ m_other }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow mb-2 btn-outline-danger rounded-pill">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">Total</div>
+                            <div class="col-md-6">₹ {{ total }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <canvas id="myChart" width="400" height="400"></canvas>
+                <script>
+                    // Parse values as numbers
+                    let food = parseFloat(document.getElementById('mfood').innerHTML);
+                    let entertainment = parseFloat(document.getElementById('mentertainment').innerHTML);
+                    let business = parseFloat(document.getElementById('mbusiness').innerHTML);
+                    let rent = parseFloat(document.getElementById('mrent').innerHTML);
+                    let emi = parseFloat(document.getElementById('memi').innerHTML);
+                    let other = parseFloat(document.getElementById('mother').innerHTML);
+
+                    // Ensure values are valid numbers
+                    if (isNaN(food)) food = 0;
+                    if (isNaN(entertainment)) entertainment = 0;
+                    if (isNaN(business)) business = 0;
+                    if (isNaN(rent)) rent = 0;
+                    if (isNaN(emi)) emi = 0;
+                    if (isNaN(other)) other = 0;
+
+                    var ctx = document.getElementById('myChart').getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Food', 'Entertainment', 'Business', 'Rent', 'EMI', 'Other'],
+                            datasets: [{
+                                label: 'Expenses Chart',
+                                data: [food, entertainment, business, rent, emi, other],
+                                backgroundColor: [
+                                    'rgb(255, 99, 132)',
+                                    'rgb(0, 0, 0)',
+                                    'rgb(255, 205, 86)',
+                                    'rgb(201, 203, 207)',
+                                    'rgb(54, 162, 235)',
+                                    'rgb(215, 159, 64)'
+                                ],
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'EXPENSE BREAKDOWN'
+                                }
+                            }
+                        }
+                    });
+                </script>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

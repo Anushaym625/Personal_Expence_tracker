@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="message-box">
+    <p>
+        {% if limit_type == 'day' %}
+            {% if y > 0 %}
+                Currently, your Today's limit is ₹ {{ y }}.
+            {% else %}
+                You have not set a Today's limit yet. Please set your limit.
+            {% endif %}
+        {% elif limit_type == 'month' %}
+            {% if y > 0 %}
+                Currently, your Monthly limit is ₹ {{ y }}.
+            {% else %}
+                You have not set a Monthly limit yet. Please set your limit.
+            {% endif %}
+        {% elif limit_type == 'year' %}
+            {% if y > 0 %}
+                Currently, your Yearly limit is ₹ {{ y }}.
+            {% else %}
+                You have not set a Yearly limit yet. Please set your limit.
+            {% endif %}
+        {% endif %}
+    </p>
+</div>
+
+<form action="/limitnum" method="POST">
+    <p>ENTER the LIMIT to avoid over EXPENSES</p> <br/>
+    
+    <!-- Dropdown to select the limit type -->
+    <label for="limit_type">Select Limit Type:</label>
+    <select name="limit_type" id="limit_type" required>
+        <option value="day" {% if limit_type == 'day' %}selected{% endif %}>Today</option>
+        <option value="month" {% if limit_type == 'month' %}selected{% endif %}>Monthly</option>
+        <option value="year" {% if limit_type == 'year' %}selected{% endif %}>Yearly</option>
+    </select> <br/>
+    
+    <label for="limit_number">Enter Limit Amount (₹):</label>
+    <input type="number" name="limit_number" id="limit_number" min="1" step="1" required/> 
+    <br/><br/>
+
+    <button class="btn btn-warning" type="submit">ENTER</button>
+</form>
+
+{% endblock %}
+
+<style>
+    /* Styling for the highlighted message box */
+    .message-box {
+        background-color: #f9f9f9;  /* Light background color */
+        border: 2px solid #ffcc00;  /* Border with a yellow color */
+        border-radius: 5px;         /* Rounded corners */
+        padding: 15px;              /* Space inside the box */
+        margin-bottom: 20px;        /* Space below the message */
+        box-shadow: 0 4px 8px rgba(194, 53, 53, 0.1); /* Subtle shadow effect */
+        font-size: 18px;            /* Larger text */
+        color: #333;                /* Text color */
+        font-weight: bold;          /* Make the text bold */
+    }
+
+    .message-box p {
+        margin: 0;  /* Remove margin around the paragraph */
+    }
+
+    /* Form Styling */
+    form {
+        font-size: 16px;  /* Slightly smaller font for the form */
+        padding: 15px;
+        background-color: #f2f2f2;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    form label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    form select,
+    form input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .btn-warning {
+        background-color: #f0ad4e;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .btn-warning:hover {
+        background-color: #ec971f;
+    }
+</style>
